@@ -6,6 +6,7 @@ import { Robot, Driver, TTS, Renderer } from 'robot'
 import { RS30XDriver } from 'rs30x-driver'
 import { SCServoDriver } from 'scservo-driver'
 import { PWMServoDriver } from 'sg90-driver'
+import { PWMServo3MotorDriver } from 'sg90-3motor-driver'
 import { NoneDriver } from 'none-driver'
 import { TTS as LocalTTS } from 'tts-local'
 import { TTS as RemoteTTS } from 'tts-remote'
@@ -27,6 +28,7 @@ if (Modules.has('mod')) {
 const drivers = new Map<string, new (param: unknown) => Driver>([
   ['scservo', SCServoDriver],
   ['pwm', PWMServoDriver],
+  ['pwm-3motor', PWMServo3MotorDriver],
   ['rs30x', RS30XDriver],
   ['none', NoneDriver],
 ])

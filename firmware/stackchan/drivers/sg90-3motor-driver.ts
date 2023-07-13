@@ -58,8 +58,8 @@ export class PWMServo3MotorDriver {
       current: 0,
     }
     this._offsetPan = param.offsetPan ?? 0
-    this._offsetLTilt = param.offsetLTilt ?? 0
-    this._offsetRTilt = param.offsetRTilt ?? 0
+    this._offsetTiltL = param.offsetTiltL ?? 0
+    this._offsetTiltR = param.offsetTiltR ?? 0
   }
 
   async setTorque(/* torque: boolean */): Promise<void> {
@@ -93,16 +93,15 @@ export class PWMServo3MotorDriver {
       const t = startTilt + diffTilt * ratio
       const r = startRoll + diffRoll * ratio
       const writingPan = Math.max(Math.min(p + 90, 170), 10) + this._offsetPan
-      const writingTilt = Math.max(Math.min(t + 90, 100), 65)
-      const writingRoll = Math.max(Math.min(t + 90, 100), 65)
-      const writingTiltL = Math.max(Math.min(t + 90, 100), 65)
-      const writingTiltR = Math.max(Math.min(-t + 90, 100), 65)
+      const writingTilt = (Math.asin(40 / 10 * Math.sin(Math.max(Math.min(t, 14), -14) * Math.PI / 180)) * 180) / Math.PI
+      const writingTiltL = Math.max(Math.min( writingTilt + r + 90, 175), 5) + this._offsetTiltL
+      const writingTiltR = Math.max(Math.min(-writingTilt - r + 90, 175), 5) + this._offsetTiltR
       this._pan.write(writingPan)
       this._tiltL.write(writingTiltL)
       this._tiltR.write(writingTiltR)
       this._panRef.current = p
       this._tiltRef.current = t
-      this._RollRef.current = r
+      this._rollRef.current = r
       cnt += 1
     }, INTERVAL)
   }

@@ -9,7 +9,13 @@
             "port": 50021
         },
         "driver": {
-            "type": "scservo"
+            "type": "pwm-3motor",
+            "pwmPan": "5",
+            "pwmTiltL": "6",
+            "pwmTiltR": "7",
+            "offsetPan": "0",
+            "offsetTiltL": "0",
+            "offsetTiltR": "0"
         }
     }
 }
