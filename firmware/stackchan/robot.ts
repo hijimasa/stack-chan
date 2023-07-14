@@ -65,6 +65,7 @@ export class Robot {
    * @public
    */
   #gazePoint: Vector3
+  #headGrad: number
   #pose: {
     body: Pose
     eyes: {
@@ -91,6 +92,7 @@ export class Robot {
     this.#power = 0
     this.#button = params.button
     this.#touch = params.touch
+    this.#headGrad = 0
     this.#pose = params.pose ?? {
       body: {
         position: {
@@ -235,8 +237,9 @@ export class Robot {
    *
    * @param position - the position of the point to look at
    */
-  lookAt(position: Vector3) {
+  lookAt(position: Vector3, grad = 0) {
     this.#gazePoint = position
+    this.#headGrad = grad
   }
 
   /**
@@ -244,6 +247,7 @@ export class Robot {
    */
   lookAway() {
     this.#gazePoint = null
+    this.#headGrad = 0
   }
 
   /**
@@ -338,11 +342,13 @@ export class Robot {
         p: -this.#pose.body.rotation.p,
       })
       const { y, p } = Rotation.fromVector3(relativeGazePoint)
-      if (y > Math.PI / 6 || y < -Math.PI / 6 || p > Math.PI / 6 || p < -Math.PI / 6) {
+      if (y > Math.PI / 12 || y < -Math.PI / 12 || p > Math.PI / 18 || p < -Math.PI / 18) {
         this.#isMoving = true
-        const time = randomBetween(0.5, 1.0)
+        const time = randomBetween(2.5, 4.0)
         await this.#driver.setTorque(true)
-        await this.#driver.applyRotation(Rotation.fromVector3(this.#gazePoint), time)
+        let commandRot = Rotation.fromVector3(this.#gazePoint)
+        commandRot.r = (this.#headGrad * Math.PI) / 180.0
+        await this.#driver.applyRotation(commandRot, time)
         Timer.set(async () => {
           await this.#driver.setTorque(false)
           this.#isMoving = false

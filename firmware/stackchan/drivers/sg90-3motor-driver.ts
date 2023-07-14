@@ -92,10 +92,9 @@ export class PWMServo3MotorDriver {
       const p = startPan + diffPan * ratio
       const t = startTilt + diffTilt * ratio
       const r = startRoll + diffRoll * ratio
-      const writingPan = Math.max(Math.min(p + 90, 170), 10) + this._offsetPan
-      const writingTilt = (Math.asin(40 / 10 * Math.sin(Math.max(Math.min(t, 14), -14) * Math.PI / 180)) * 180) / Math.PI
-      const writingTiltL = Math.max(Math.min( writingTilt + r + 90, 175), 5) + this._offsetTiltL
-      const writingTiltR = Math.max(Math.min(-writingTilt - r + 90, 175), 5) + this._offsetTiltR
+      const writingPan = Math.max(Math.min(p + 90, 155), 25) + this._offsetPan
+      const writingTiltL = Math.max(Math.min( 4*t + r + 90, 150), 30) + this._offsetTiltL
+      const writingTiltR = Math.max(Math.min(-4*t + r + 90, 150), 30) + this._offsetTiltR
       this._pan.write(writingPan)
       this._tiltL.write(writingTiltL)
       this._tiltR.write(writingTiltR)
