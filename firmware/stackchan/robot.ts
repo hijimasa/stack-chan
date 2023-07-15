@@ -344,7 +344,7 @@ export class Robot {
       const { y, p } = Rotation.fromVector3(relativeGazePoint)
       if (y > Math.PI / 12 || y < -Math.PI / 12 || p > Math.PI / 18 || p < -Math.PI / 18) {
         this.#isMoving = true
-        const time = randomBetween(2.5, 4.0)
+        const time = randomBetween(1.0, 2.5)
         await this.#driver.setTorque(true)
         let commandRot = Rotation.fromVector3(this.#gazePoint)
         commandRot.r = (this.#headGrad * Math.PI) / 180.0
