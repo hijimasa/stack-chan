@@ -22,7 +22,6 @@ import { loadPreferences, asyncWait } from 'stackchan-util'
 function createRobot() {
   const drivers = new Map<string, new (param: unknown) => Driver>([
     ['scservo', SCServoDriver],
-    ['dynamixel', DynamixelDriver],
     ['pwm', PWMServoDriver],
     ['pwm-3motor', PWMServo3MotorDriver],
     ['rs30x', RS30XDriver],
